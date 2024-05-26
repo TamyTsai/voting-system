@@ -5,20 +5,20 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: sqlite3
+  adapter: sqlite3 # 資料庫系統用的是SQLite3，一種檔案型資料庫
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
-development:
+development: # 在開發環境下
   <<: *default
-  database: db/development.sqlite3
+  database: db/development.sqlite3 # 資料會放到此
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-test:
+test: # 在測試環境下
   <<: *default
-  database: db/test.sqlite3
+  database: db/test.sqlite3 # 資料會放到此
 
 production:
   <<: *default
