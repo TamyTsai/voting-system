@@ -95,6 +95,32 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
     end
     # 於rails routes查得：動詞為POST的話  就會去/candidates路徑 找candidates控制器的 create方法（action）
 
+    def edit # 對應/candidates/:id/edit路徑（編輯單一候選人資料）
+        # 要先抓到要編輯的候選人資料
+        @candidate = Candidate.find_by(id: params[:id])
+    end
+
+    def update # 對應以PATCH動詞（事實上是POST PATCH是模擬的）進入的/candidates/:id路徑（將更新的候選人資料儲存）
+        # candidate   PATCH  /candidates/:id(.:format)  candidates#update 
+        @candidate = Candidate.find_by(id: params[:id]) 
+        # 需要重抓候選人資料，因為http沒有狀態，上一個頁面做的事，下一個頁面不知道
+        # 到新頁面後只有id，所以要重做物件
+
+        if @candidate.update(candidate_params) # 成功更新資料時
+        # ORM基本操作之U
+        # update()
+        # update_attributes()
+        # update_all()
+        # 給一包清洗過的資料
+            flash[:notice] = "Candidate updated!"
+            redirect_to '/candidates' # 回到候選人列表頁
+        else
+            render :edit
+            # 去edit這個頁面，重新渲染一次（不是重新執行edit方法（action）），是請view中的edit頁面重畫一次
+        end
+
+    end
+
     private # 作用範圍是 以下 直到 本class的end為止，所以要寫在最後
     def candidate_params
         params.require(:candidate).permit(:name, :party, :age, :politic) #省略return之寫法

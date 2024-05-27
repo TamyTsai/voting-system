@@ -36,7 +36,13 @@
         <!-- candidate GET    /candidates/:id(.:format)      candidates#show -->
         <td><%= candidate.party %></td>
         <td><%= candidate.age %></td>
-        <td>Action</td> <!-- 刪除、編輯等按鈕 -->
+        <td>
+            <%= link_to '編輯', edit_candidate_path(candidate.id) %>
+            <!--  edit_candidate   GET   /candidates/:id/edit  candidates#edit -->
+            <!-- 編輯候選人資料頁面路徑 /candidates/:id/edit -->
+
+        </td> <!-- 刪除、編輯等按鈕 -->
+        
     </tr>
     <% end %>
     <!-- 透過迴圈的方式 將已經寫進資料庫的候選人資料（@candidates = Candidate.all） 一筆一筆 印出來 -->
