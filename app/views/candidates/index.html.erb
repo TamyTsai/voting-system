@@ -33,15 +33,26 @@
         <td><%= link_to candidate.name, candidate_path(candidate.id) %></td>
         <!-- <td><a href='/candidates/<%= candidate.id %>'><%= candidate.name %></a></td> -->
         <!-- 單一候選人資料的name（migration欄位名稱 所對應的 使用者輸入的值） -->
-        <!-- candidate GET    /candidates/:id(.:format)      candidates#show -->
+        <!-- candidate GET   /candidates/:id(.:format)    candidates#show -->
         <td><%= candidate.party %></td>
         <td><%= candidate.age %></td>
-        <td>
+        <td> <!-- 刪除、編輯等按鈕 -->
             <%= link_to '編輯', edit_candidate_path(candidate.id) %>
             <!--  edit_candidate   GET   /candidates/:id/edit  candidates#edit -->
             <!-- 編輯候選人資料頁面路徑 /candidates/:id/edit -->
+            <%= link_to '刪除', candidate_path(candidate.id), method: :delete, data: {confirm: "確定刪除?"} %>
+            <!-- <%= link_to 'Delete', candidate_path(candidate.id),data: {turbo_method: :delete, turbo_confirm: '確定刪除?'} %> --> <!-- rails 7寫法 -->
+            <!-- <%= link_to '刪除', candidate_path(candidate.id), method: 'delete', data: {confirm: "確定刪除?"} %> -->
+            <!-- candidate DELETE /candidates/:id(.:format)  candidates#destroy -->
+            <!-- 用delete方法 進入/candidates/:id路徑 -->
+            <!--  <a rel="nofollow" data-method="delete" href="/candidates/4">刪除</a> -->
+            <!-- <a data-confirm="確定刪除?" rel="nofollow" data-method="delete" href="/candidates/2">刪除</a> -->
+            <!--  data: {confirm: "確定刪除?"}  會在html標籤裡長出 data_confirm屬性 與  "確定刪除?"的值-->
+            <!--  data: {confirm: "確定刪除?", abc: "123"}  會在html標籤裡長出 data-confirm屬性 與 值"確定刪除?" 及 data-abc屬性 與 值"123"-->
+            <!-- 加上, method: 'delete'，產生的html就多了 data-method="delete" -->
+            <!-- 超連結中有 data-method="delete"屬性 的話，就會用delete當動詞（js動的手腳）-->
 
-        </td> <!-- 刪除、編輯等按鈕 -->
+        </td> 
         
     </tr>
     <% end %>

@@ -18,7 +18,7 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
         # 點擊第一個候選人頁面時，log顯示Parameters: {"id"=>"1"}
         # 路徑符合/candidates/:id此模式，id就會被捕捉起來，可以拿來放在實體變數之類的
         # 表示可以透過params這個hash，拿id這個key對應的值來用
-        @candidate = Candidate.find_by(id: params[:id])
+        @candidate = Candidate.find_by(id: params[:id]) # 抓出要讀取顯示（R）的資料
         # Candidate類別（model）有find_by方法
 
         # controller負責抓資料給 view要用的實體變數
@@ -102,7 +102,7 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
 
     def update # 對應以PATCH動詞（事實上是POST PATCH是模擬的）進入的/candidates/:id路徑（將更新的候選人資料儲存）
         # candidate   PATCH  /candidates/:id(.:format)  candidates#update 
-        @candidate = Candidate.find_by(id: params[:id]) 
+        @candidate = Candidate.find_by(id: params[:id]) # 抓出要更新（U）的資料
         # 需要重抓候選人資料，因為http沒有狀態，上一個頁面做的事，下一個頁面不知道
         # 到新頁面後只有id，所以要重做物件
 
@@ -118,6 +118,25 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
             render :edit
             # 去edit這個頁面，重新渲染一次（不是重新執行edit方法（action）），是請view中的edit頁面重畫一次
         end
+
+    end
+
+    def destroy # 對應以 DELETE動詞進入的/candidates/:id路徑（刪除候選人資料）
+        # candidate DELETE /candidates/:id(.:format)  candidates#destroy 
+        @candidate = Candidate.find_by(id: params[:id])  # 抓出要刪除（D）的資料
+
+        @candidate.destroy
+        # ORM基本操作之D
+        # delete （直接刪掉）
+        # destroy （會經歷一連串callback）（真的把資料刪除，就不回來，由資料庫中抹除） 
+        # destroy_all(condition = nil)
+        flash[:notice] = "Candidate deleted!"
+        redirect_to '/candidates' # 回到候選人列表頁
+
+        # 抓資料
+        # 刪資料
+        # 跳提示
+        # 重新導向頁面
 
     end
 
