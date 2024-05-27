@@ -2,9 +2,9 @@ Rails.application.routes.draw do
   resources :candidates # 做一個 候選人（符號） 相關的資源 出來 ＃複數 :複數
   # 把candidates路徑全部開出來（8條路徑 對照 7個action（新增、修改、刪除等action））（方法）
   #   Prefix      Verb   URI Pattern（路徑）                                                                                 Controller#Action
-  #   candidates   GET    /candidates(.:format)                                                                             candidates#index
-  #                POST   /candidates(.:format)                                                                             candidates#create
-  # new_candidate  GET    /candidates/new(.:format)                                                                         candidates#new
+  #   candidates   GET    /candidates(.:format)  候選人列表頁                                                                 candidates#index
+  #                POST   /candidates(.:format)   傳送候選人的資料                                                            candidates#create
+  # new_candidate  GET    /candidates/new(.:format)    新建候選人                                                             candidates#new
   # edit_candidate GET    /candidates/:id/edit(.:format)                                                                    candidates#edit
   #    candidate   GET    /candidates/:id(.:format)                                                                         candidates#show
   #                PATCH  /candidates/:id(.:format)                                                                         candidates#update
