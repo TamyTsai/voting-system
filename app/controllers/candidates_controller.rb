@@ -2,6 +2,16 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
 
     def index # controller的action（方法）
         # 沒有特別聲明的話，就會去views找同名html檔案（index.html.erb）
+        @candidates = Candidate.all
+        # 透過.all類別方法，將Candidate此類別（model）中的所有資料撈出來，指定給實體變數@candidates（因為撈了多筆資料，所用複數型）
+        # ORM基本操作之R
+        # Candidate.all 列出所有候選人（物件、model、資料表中的一筆資料）資料
+        # Candidate.select('name') 同上，只選取name欄位
+        # Candidate.where(name: 'Ruby') 找出所有name欄位是Ruby的資料
+        # Candidate.order('age DESC') 依照年齡大小反向排序
+        # Candidate.order(age: :desc) 同上
+        # Candidate.limit(5) 只取出5筆資料
+        
     end
 
     # ORM基本操作之C：new、create

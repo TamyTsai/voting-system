@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :candidates # 做一個 候選人（符號） 相關的資源 出來 ＃複數 :複數
+  # resources :candidates, path: 'member' # 修改路徑名稱（全站與candidates相關的路徑都用member取代）
   # 把candidates路徑全部開出來（8條路徑 對照 7個action（新增、修改、刪除等action））（方法）
   #   Prefix      Verb   URI Pattern（路徑）                                                                                 Controller#Action
   #   candidates   GET    /candidates(.:format)  候選人列表頁                                                                 candidates#index
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
   #                DELETE /candidates/:id(.:format)                                                                         candidates#destroy
 
   # resources :candidates, only: [:index, :show]  ：只要index和show兩條路徑
+
   # /candidates(.:format)：所有候選人的列表
   # candidates#index：當網址為/candidates時，去找candidates controller，找index action來選
   # /candidates/:id(.:format)  列出id所指的候選人

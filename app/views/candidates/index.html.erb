@@ -1,8 +1,44 @@
 <!-- xxxx.html.erb 為erb檔案，但這個erb檔轉譯完後，請當作html檔對待 -->
+<!-- /candidates/ 候選人清單頁面，列出所有候選人 -->
+
 <%= flash[:notice] %>
 <!-- 只要有被印過一次，再重新整理就會不見 -->
 
 <h1>hi</h1>
 
-<a href="/candidates/new">Add Candidate</a>
+<!-- link_to helper 可長出連結 -->
+<!-- link_to 'Add Candidate', '/candidates/new'  --> <!-- 網址寫死 -->
+<%= link_to 'Add Candidate', new_candidate_path %>
+<!-- link_to '連結顯示之字樣', '點下連結後要前往的網址'（字串型態）（可以Prexfix_path表示） -->
+<!--  new_candidate（Prefix）  GET    /candidates/new(.:format)     candidates#new -->
+<!--  路徑對照表中Prefix為空表示同上-->
+<!-- 用Prexfix_path寫路徑的好處是：1.打錯字會報錯   2.即使在routes.rb改掉路徑名稱，此處一樣打原名稱，會 自動產生 修改後路徑名稱的html-->
+<!-- 例如：<a href="/member/new">Add Candidate</a> -->
+<!-- link_to helper 可長出：<a href="/candidates/new">Add Candidate</a> -->
 <!-- /candidates/new為 新建候選人頁面 -->
+
+
+
+<table>
+    <tr>
+        <td>Name</td>
+        <td>Party</td>
+        <td>Age</td>
+        <td>Action</td>
+    </tr>
+
+    <%= @candidates.each do |candidate| %>
+    <tr>
+        <!-- candidate是@candidates資料們中的單一資料 -->
+        <td><%= link_to candidate.name, candidate_path(candidate.id) %></td>
+        <!-- <td><a href='/candidates/<%= candidate.id %>'><%= candidate.name %></a></td> -->
+        <!-- 單一候選人資料的name（migration欄位名稱 所對應的 使用者輸入的值） -->
+        <!-- candidate GET    /candidates/:id(.:format)      candidates#show -->
+        <td><%= candidate.party %></td>
+        <td><%= candidate.age %></td>
+        <td>Action</td> <!-- 刪除、編輯等按鈕 -->
+    </tr>
+    <% end %>
+    <!-- 透過迴圈的方式 將已經寫進資料庫的候選人資料（@candidates = Candidate.all） 一筆一筆 印出來 -->
+    <!-- form_for(複數) do |單數| -->
+</table>
