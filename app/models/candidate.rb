@@ -1,4 +1,9 @@
 class Candidate < ApplicationRecord
+    # 後端驗證，進資料庫前的驗證  
+    validates :name, presence: true
+    # 注意:name為符號
+    # 名字欄位必填，沒寫，就會寫入資料庫失敗
+
 end
 
 # 類別的名字為常數 首字母大寫，但檔案名稱為小寫

@@ -9,6 +9,7 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
     def new # 對應/candidates/new路徑
         # new方法會 建立 一筆資料，但還不會存到資料庫裡
         @candidate = Candidate.new # 建立 一筆資料（model、物件）
+        # 沒有帶東西，全新物件
         # model：class Candidate < ApplicationRecord
         # 指定給一個變數，view才能拿到
         # 建立物件的寫法寫在controller會比寫在view好，view拿這裡給的實體變數呈現畫面就好
@@ -47,8 +48,16 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
             # 資料還沒清洗過 的話，會被預設檔下來，出現ActiveModel::ForbiddenAttributesError 錯誤訊息
             # 表示需要 資料清洗
             # 雖然有token的保護，有心人士無法透過其他程式或網站傳送資料進來這裡的後端，但他們還是可以在我們的頁面上用開發者模式，編輯html，新增欄位，成功送更多資料到這裡的後端
-        else # 若 寫入失敗
-            # NG
+        else # 若 寫入失敗（格式不對、驗證沒過...）（在model做後端驗證（進資料庫前的驗證））          
+            # redirect_to '/candidates/new' 
+            # 就不跳回候選人列表頁，而是停留在本頁面（新建候選人頁面），但此寫法會轉回全新頁面，導致所有資料都要重填
+            # http沒有所謂的狀態，這頁寫好的東西，轉址後的網頁不會知道
+            render :new 
+            # 去new這個頁面，重新渲染一次（不是重新執行new方法（action）），是請view中的new頁面重畫一次
+            # 本質上還是在create這個action中，並非執行new action
+            # render就是要借new.html檔案來用
+            # new.html檔案需要＠candidate 實體變數（所以才會在create action中，也寫一個跟new action中相同的 ＠candidate實體變數）（但也有 沒 這麼剛好（有同名實體變數）的狀況）
+            # 這裡抓到的 ＠candidate實體變數 已經不像new action中是新創出來的，是裡頭已經有料（candidate_params）的 物件、model
         end
 
         # 可進rails console中控台 檢查資料寫入狀態

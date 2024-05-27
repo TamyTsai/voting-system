@@ -17,7 +17,8 @@
 
 <!-- form helper -->
 <!-- form_for（Class名稱.new（以該類別建立model物件（實體）））：當form_for發現括弧內為 全新model（剛剛長出來）時，就會自動生成 路徑、傳送方法、隱藏token欄位的html-->
-<!-- 欄位要對應migration的欄位名稱 -->
+<!-- 當form_for發現括弧內為 有料的model（有用參數hash抓資料）時，就會自動生成 欄位已經帶有資料的的html -->
+<!-- 欄位要對應migration的欄位名稱，form_for會把相對應的輸入，都塞到相對應欄位 -->
 <!-- 不過建立物件的行為 應該交給controller做會比較好，所以把 Candidate.new寫到controller new方法裡，並指定給實體變數 @candidate，這裡放實體變數-->
 <!-- view不做邏輯運算和物件建立 -->
 <%= form_for(@candidate) do |form|%>
