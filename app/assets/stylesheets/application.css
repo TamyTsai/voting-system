@@ -13,3 +13,9 @@
  *= require_tree .
  *= require_self
  */
+ 
+ /* manifest打包 */
+ /* css在rails可以當打包描述檔 */
+ /* 星號加等號在rails的css中不會被判定為註解（沒等號的話會被判定為註解） */
+ /* require_tree . 表示會把stylesheets目錄中所有css打包成一個檔案，把檔案目錄都require引入 進來*/
+ /* require_self 引入本檔案（在此檔案裡寫的css也會被引入）*/

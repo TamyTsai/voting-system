@@ -1,4 +1,20 @@
-<h1>Add Candidate</h1>
+<!-- /candidates/new新建候選人資料頁面 -->
+<h1>新建候選人頁面</h1>
+
+<!-- 如果 候選人物件 有任何錯誤，就印出錯誤訊息 -->
+<% if @candidate.errors.any? %> 
+<!-- 判斷 候選人物件 有沒有任何錯誤 -->
+    <ul>
+        <% @candidate.errors.full_messages.each do |message| %>
+        <!-- @candidate.errors.full_messages是一個陣列（裝有各個錯誤訊息） 所以可以用each方法 -->
+            <li><%= message %></li>
+            <!-- message是陣列中的每個元素（單一錯誤原訊息） -->
+        <% end %>
+    </ul>
+<% end %>
+
+<!-- name沒輸入卻按送出的時候 name的label和輸入框，變成2個div，所以變成兩行，要透過css（app > assets > stylesheets）改善 -->
+
 <!-- 新建候選人頁面/candidates/new -->
 <!-- <form action="/candidates" method="POST">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"> -->

@@ -1,3 +1,18 @@
 // Place all the styles related to the candidates controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+// 在新建候選人頁面name欄位沒打卻送出時，其label及輸入框html會變成兩組div 類別為.field_with_errors（用開發者模式 右鍵點擊看）
+.field_with_errors {
+    display: inline-block;
+
+    // field_with_errors類別標籤中 的type為text的輸入標籤
+    input[type="text"] {
+        border-color: red;
+        border-width: 1px;
+    }
+
+    label {
+        color: red;
+    }
+}

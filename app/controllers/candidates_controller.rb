@@ -33,11 +33,8 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
         
     end
 
-    # ORM基本操作之C：new、create
-
     def new # 對應/candidates/new路徑（新建候選人資料）
-        # new方法會 建立 一筆資料，但還不會存到資料庫裡
-        @candidate = Candidate.new # 建立 一筆資料（model、物件）
+        @candidate = Candidate.new # 建立 一筆資料（model、物件） # new方法會 建立 一筆資料，但還不會存到資料庫裡  # ORM基本操作之C：new、create
         # 沒有帶東西，全新物件
         # model：class Candidate < ApplicationRecord
         # 指定給一個變數，view才能拿到
@@ -45,8 +42,6 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
     end
 
     def create # 對應以POST動詞進入的/candidates路徑（將新建的候選人資料儲存）
-        # create會 建立 一筆資料，並直接寫入 資料庫裡（寫入失敗時，會roll back回來） 
-
         # debugger 
         # 中斷點 # 表單點擊送出時，會暫停，供開發者到log除錯
         # 輸入params、params[:candidate]、params[:candidate][:name]...，以查看想知道的hash key 中的 value
@@ -109,6 +104,11 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
     # 此方法本身不需要被外部存取，只在這個class中會被用到（用來代替落落長的 資料清洗過的欄位資料），所以設為private方法
     # private：原則上只有 類別內部 可以操作，但實際上 只要沒有明確訊息接收者 都可以呼叫
 
+    # 資料清洗
+    # clean_params = params.require(:candidate).permit(:name, :party, :age, :politic)
+    # 只允許 :candidate（Parameters hash中的key）這個hash 中， 的部分欄位（有人增加新欄位想送資料 該欄位就會被無視）
+    # "candidate"=>{"name"=>"123", "party"=>"456", "age"=>"26", "politic"=>"123"}
+
 end
 
 # 命名慣例
@@ -116,3 +116,15 @@ end
 # 檔名為candidates_controller.rb 蛇式
 
 # CandidatesController的相關views要放在 views/candidates/xxx.html.erb
+
+# 於rails console輸入
+# c1 = Candidate.new 新建立一個物件（model）
+# c1 #<Candidate id: nil, name: nil, party: nil, age: nil, politic: nil, votes: 0, created_at: nil, updated_at: nil> (空的)（在記憶體上飄，還沒寫進資料庫內）
+# c1.save（會出現false）（因為c1還沒做驗證（name欄位在model中已經設定必填））
+# begin transaction rollback transaction：交易無效 不會把資料寫進資料庫 回到交易前狀態
+# c1.errors 問c1物件有沒有error方法
+# c1.any? 問c1物件有沒有任何東西
+# c1.errors.any? 問c1物件有沒有任何錯誤 (還沒使用.save試圖寫進資料庫 做驗證前 不會有錯，.save後就會變有錯)
+# c1.errors.full_messages 印出目前有哪些錯（用陣列裝著所有錯誤）（=> ["Name can't be blank"] ）
+# create會 建立 一筆資料，並直接寫入 資料庫裡（寫入失敗時，會roll back回來） 
+
