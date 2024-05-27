@@ -4,7 +4,7 @@
 <%= flash[:notice] %>
 <!-- 只要有被印過一次，再重新整理就會不見 -->
 
-<h1>hi</h1>
+<h1>候選人清單頁面（首頁）</h1>
 
 <!-- link_to helper 可長出連結 -->
 <!-- link_to 'Add Candidate', '/candidates/new'  --> <!-- 網址寫死 -->
@@ -27,7 +27,7 @@
         <td>Action</td>
     </tr>
 
-    <%= @candidates.each do |candidate| %>
+    <% @candidates.each do |candidate| %> <!-- 沒有=，有需要「輸出」（印出來）東西時才要加= ，迴圈本身不用印，迴圈裡的東西才要印（呈現於畫面上）-->
     <tr>
         <!-- candidate是@candidates資料們中的單一資料 -->
         <td><%= link_to candidate.name, candidate_path(candidate.id) %></td>

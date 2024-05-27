@@ -1,6 +1,6 @@
 class CandidatesController < ApplicationController # 繼承自ApplicationController才會有功能
 
-    def index # controller的action（方法）
+    def index # controller的action（方法） # 對應 /candidates路徑（候選人清單頁面）
         # 沒有特別聲明的話，就會去views找同名html檔案（index.html.erb）
         @candidates = Candidate.all
         # 透過.all類別方法，將Candidate此類別（model）中的所有資料撈出來，指定給實體變數@candidates（因為撈了多筆資料，所用複數型）
@@ -14,9 +14,28 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
         
     end
 
+    def show # 對應/candidates/:id路徑（單一候選人頁面）
+        # 點擊第一個候選人頁面時，log顯示Parameters: {"id"=>"1"}
+        # 路徑符合/candidates/:id此模式，id就會被捕捉起來，可以拿來放在實體變數之類的
+        # 表示可以透過params這個hash，拿id這個key對應的值來用
+        @candidate = Candidate.find_by(id: params[:id])
+        # Candidate類別（model）有find_by方法
+
+        # controller負責抓資料給 view要用的實體變數
+
+        # ORM基本操作之R
+        # Candidate.first 找出第一筆候選人（物件、model、資料表中的一筆資料）資料
+        # Candidate.last 找到最後一筆資料
+        # Candidate.find(1) 找到id = 1 的資料（出問題直接噴例外）
+        # Candidate.find_by(id: 1) 找到id = 1 的資料（找不到時 給nil）（undefined method `name' for nil:NilClass）（nil沒有name方法）
+        # Candidate.find_by_sql("SQL語法") 
+        # Candidate.first_each do |candidate|   ....  end
+        
+    end
+
     # ORM基本操作之C：new、create
 
-    def new # 對應/candidates/new路徑
+    def new # 對應/candidates/new路徑（新建候選人資料）
         # new方法會 建立 一筆資料，但還不會存到資料庫裡
         @candidate = Candidate.new # 建立 一筆資料（model、物件）
         # 沒有帶東西，全新物件
@@ -25,7 +44,7 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
         # 建立物件的寫法寫在controller會比寫在view好，view拿這裡給的實體變數呈現畫面就好
     end
 
-    def create # 對應以POST動詞進入的/candidates路徑
+    def create # 對應以POST動詞進入的/candidates路徑（將新建的候選人資料儲存）
         # create會 建立 一筆資料，並直接寫入 資料庫裡（寫入失敗時，會roll back回來） 
 
         # debugger 
@@ -81,7 +100,7 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
     end
     # 於rails routes查得：動詞為POST的話  就會去/candidates路徑 找candidates控制器的 create方法（action）
 
-    private
+    private # 作用範圍是 以下 直到 本class的end為止，所以要寫在最後
     def candidate_params
         params.require(:candidate).permit(:name, :party, :age, :politic) #省略return之寫法
         # return可適時省略，會自動 回傳 最後一行 的 執行結果

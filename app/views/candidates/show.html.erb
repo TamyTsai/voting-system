@@ -1,0 +1,18 @@
+<!-- /candidates/:id單一候選人資料頁面 -->
+<% if @candidate %>  <!-- 沒有=，有需要「輸出」（印出來）東西時才要加= -->
+<!-- 在ruby中，只有false與nil會被判斷為false -->
+<!-- 當controller用find_by方法找不存在id的候選人資料時，會回傳nil -->
+<!-- 所以這裡是表示有該筆候選人資料時 -->
+    <h1><%= @candidate.name %></h1>
+    <!-- 在controller show action 中以id抓到資料後，印出name key對應的值 -->
+
+    <ul>
+        <li>party: <%= @candidate.party %></li>
+        <li>age: <%= @candidate.age %></li>
+        <li>politic: <%= @candidate.politic %></li>
+    </ul>
+<% else %>
+
+<h1>No Record found!</h1>
+
+<% end %>
