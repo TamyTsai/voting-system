@@ -1,4 +1,8 @@
 <!-- xxxx.html.erb 為erb檔案，但這個erb檔轉譯完後，請當作html檔對待 -->
+<%= flash[:notice] %>
+<!-- 只要有被印過一次，再重新整理就會不見 -->
+
 <h1>hi</h1>
 
 <a href="/candidates/new">Add Candidate</a>
+<!-- /candidates/new為 新建候選人頁面 -->
