@@ -20,6 +20,7 @@
 <!-- form_for發現@candidate是有料的 所以就先塞好資料 -->
 <!-- 產生html：<form class="edit_candidate" id="edit_candidate_6" action="/candidates/6" accept-charset="UTF-8" method="post"><input type="hidden" name="_method" value="patch" autocomplete="off" /><input type="hidden" name="authenticity_token" value="-bP1LbAg4fHl4T3IYDLJK9vnlg5o-Gre8arNQBrPK-EbfZ88DgWZPOlewvfc2s3Bks0RFuPhmRGbv8Aj-OaXgw" autocomplete="off" /> -->
 <!-- 瀏覽器目前只支援GET、POST動詞，PATCH、PUT、DELETE都是模擬的 -->
+<!-- Rails 使用 Javascript 來模擬 HTTP PATCH、PUT、DELETE（瀏覽器通常只支援 GET 和 POST）。 -->
 <!-- 其中<input type="hidden" name="_method" value="patch" autocomplete="off" /> -->
 <!-- 表單送到後端後 rails發現有_method方法 是patch 就假裝是patch方法-->
 <!-- candidate   PATCH  /candidates/:id(.:format)  candidates#update -->
