@@ -140,6 +140,25 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
 
     end
 
+    def vote # 對應以 POST動詞 進入的 /candidates/:id/vote路徑
+        # vote_candidate   POST   /candidates/:id/vote(.:format)       candidates#vote
+
+        @candidate = Candidate.find_by(id: params[:id])  # 抓出要被投票的候選人（網址的:id會被抓下來）
+        # @candidate.votes += 1
+        @candidate.increment(:votes)
+        # 票數欄位（資料庫的票數欄位）
+        # 忘記欄位名稱 可以去db schema看
+        # increment方法是rails modle提供的
+        @candidate.save
+        flash[:notice] = "Voted!"
+        redirect_to '/candidates' # 回到候選人列表頁
+
+        # 抓資料
+        # 更新資料
+        # 存檔（寫進資料庫）
+        # 跳提示
+    end
+
     private # 作用範圍是 以下 直到 本class的end為止，所以要寫在最後
     def candidate_params
         params.require(:candidate).permit(:name, :party, :age, :politic) #省略return之寫法

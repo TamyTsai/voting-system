@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :candidates # 做一個 候選人（符號） 相關的資源 出來 ＃複數 :複數
+  # resources :candidates # 做一個 候選人（符號） 相關的資源 出來 ＃複數 :複數
   # resources :candidates, path: 'member' # 修改路徑名稱（全站與candidates相關的路徑都用member取代）
   # 把candidates路徑全部開出來（8條路徑 對照 7個action（新增、修改、刪除等action））（方法）
   #   Prefix      Verb   URI Pattern（路徑）                                                                                 Controller#Action
@@ -22,6 +22,28 @@ Rails.application.routes.draw do
 
   # get '/hello.php', to: 'candidates#index'
   # 做一個/hello.php的網址 去找candidates控制器 的 index方法
+
+  # post '/candidates/:id/vote', to: 'candidates#vote'
+  # 動詞 路徑, to: 控制器#action
+  # 自建route
+  # candidate  POST   /candidates/:id/vote(.:format)   candidates#vote
+  # 可以寫在candidates中
+
+  resources :candidates do
+    member do
+      post :vote # 動詞 :action
+    end
+    # 幫原本的8條路徑再擴充其他路徑（帶id）
+    # vote_candidate   POST   /candidates/:id/vote(.:format)       candidates#vote
+    # post比較不容易被仿造（會檢查token） get只要知道路徑 就可以灌票
+
+    # collection do
+    #   post :vote
+    # end
+    # 幫原本的8條路徑再擴充其他路徑（不帶id）
+    # vote_candidates POST   /candidates/vote(.:format)     candidates#vote
+
+  end
 
 end
  

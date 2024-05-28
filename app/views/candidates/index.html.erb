@@ -21,6 +21,8 @@
 
 <table>
     <tr>
+        <td></td>
+        <td>Votes</td>
         <td>Name</td>
         <td>Party</td>
         <td>Age</td>
@@ -30,6 +32,12 @@
     <% @candidates.each do |candidate| %> <!-- 沒有=，有需要「輸出」（印出來）東西時才要加= ，迴圈本身不用印，迴圈裡的東西才要印（呈現於畫面上）-->
     <tr>
         <!-- candidate是@candidates資料們中的單一資料 -->
+        <td><%= link_to '投票', vote_candidate_path(candidate.id),  method: 'post' %></td>
+        <!--  vote_candidate   POST   /candidates/:id/vote(.:format)       candidates#vote -->
+        <!-- 預設會用GET方法連 -->
+        <!-- <td><a rel="nofollow" data-method="post" href="/candidates/1/vote">投票</a></td> -->
+        <td><%= candidate.votes %></td>
+        <!-- 印出candidate的votes欄位值 -->
         <td><%= link_to candidate.name, candidate_path(candidate.id) %></td>
         <!-- <td><a href='/candidates/<%= candidate.id %>'><%= candidate.name %></a></td> -->
         <!-- 單一候選人資料的name（migration欄位名稱 所對應的 使用者輸入的值） -->
@@ -40,7 +48,7 @@
             <%= link_to '編輯', edit_candidate_path(candidate.id) %>
             <!--  edit_candidate   GET   /candidates/:id/edit  candidates#edit -->
             <!-- 編輯候選人資料頁面路徑 /candidates/:id/edit -->
-            <%= link_to '刪除', candidate_path(candidate.id), method: :delete, data: {confirm: "確定刪除?"} %>
+            <%= link_to '刪除', candidate_path(candidate.id), method: 'delete', data: {confirm: "確定刪除?"} %>
             <!-- <%= link_to 'Delete', candidate_path(candidate.id),data: {turbo_method: :delete, turbo_confirm: '確定刪除?'} %> --> <!-- rails 7寫法 -->
             <!-- <%= link_to '刪除', candidate_path(candidate.id), method: 'delete', data: {confirm: "確定刪除?"} %> -->
             <!-- candidate DELETE /candidates/:id(.:format)  candidates#destroy -->
