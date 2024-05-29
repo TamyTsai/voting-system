@@ -20,6 +20,9 @@ ActiveRecord::Schema.define(version: 2024_05_26_132919) do
     t.integer "votes", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.timestamps
+    # timestamps為migration預設欄位，會轉換成created_at與updated_id這兩個時間欄位
+    # 在 資料新增 或 更新 的時候，自動寫入當下時間
   end
 
 end
