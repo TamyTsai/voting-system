@@ -4,6 +4,10 @@ class Candidate < ApplicationRecord
     # 注意:name為符號
     # 名字欄位必填，沒寫，就會寫入資料庫失敗
 
+    has_many :vote_logs
+    # has_many不是設定，是 類別方法（作用在class Candidate）
+    # has_many :vote_logs會動態產生幾個實體方法：vote_logs  vote_logs=  build  create
+
 end
 
 # 類別的名字為常數 首字母大寫，但檔案名稱為小寫

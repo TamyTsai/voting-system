@@ -144,12 +144,31 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
         # vote_candidate   POST   /candidates/:id/vote(.:format)       candidates#vote
 
         @candidate = Candidate.find_by(id: params[:id])  # 抓出要被投票的候選人（網址的:id會被抓下來）
+
+        # 從vote角度看記錄（由 選票 本身 建立相關欄位與值）（票投給誰、投票者ip）
+        # v = VoteLog.create(candidate: @candidate, ip_address: request.remote_ip)
+        # create會建立一筆資料，並直接寫入資料庫裡
+        # v = VoteLog.new(candidate: @candidate, ip_address: request.remote_ip)
+        # v.save
+        # new方法不會寫入資料庫，只會在記憶體先建構東西出來（建立一筆物件，但還不會存到資料庫裡），等save的時候才會寫入資料庫
+        # 用VoteLog類別（model）建一個物件，初始化裡面就帶了兩個參數
+        # 候選人欄位就裝前面用find_by加網址id抓出來的候選人
+        # 對request物件使用remote_ip方法，可以得到投票當下的ip位置
+
+        # 從候選人角度看vote
+        # 一個候選人有很多筆 被投票紀錄（投票者ip）
+        @candidate.vote_logs.create(ip_address: request.remote_ip)
+        # 由單一候選人的被投票記錄 來建立相關欄位與值（只需要再帶 投票者ip）
+        # g model的時候有設定reference，所以class VoteLog 有 belongs_to :candidate，但 class Candidate 不會自動增加相關設定（因為不知道你要一對一還是一對多）
+        # 手動去candidate model 設定 has_many :vote_logs 後，這裡才會有vote_logs方法可以用
+
         # @candidate.votes += 1
-        @candidate.increment(:votes)
+        # @candidate.increment(:votes)
         # 票數欄位（資料庫的票數欄位）
         # 忘記欄位名稱 可以去db schema看
         # increment方法是rails modle提供的
-        @candidate.save
+        # @candidate.save
+
         flash[:notice] = "Voted!"
         redirect_to '/candidates' # 回到候選人列表頁
 

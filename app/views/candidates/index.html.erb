@@ -36,8 +36,21 @@
         <!--  vote_candidate   POST   /candidates/:id/vote(.:format)       candidates#vote -->
         <!-- 預設會用GET方法連 -->
         <!-- <td><a rel="nofollow" data-method="post" href="/candidates/1/vote">投票</a></td> -->
-        <td><%= candidate.votes %></td>
+        <td><%= candidate.vote_logs.count %></td> 
+        <!-- candidate.vote_logs 會回傳單一候選人的得票記錄（陣列），.count會回傳陣列元素數量，投票記錄數量 即等於 投票數 -->
+        <!-- <td><%= candidate.votes %></td> -->
         <!-- 印出candidate的votes欄位值 -->
+        <!-- n+1問題 -->
+        <!-- 2.7.8 :003 > c1 = Candidate.first
+        Candidate Load (0.4ms)  SELECT "candidates".* FROM "candidates" ORDER BY "candidates"."id" ASC LIMIT ?  [["LIMIT", 1]]
+        => #<Candidate id: 1, name: "王小明", party: "狗狗黨", age: 30, politic: "支持狗狗", votes: 0, created_at: "2024-05-27 00:41:53.960402000 +0000", updated_at: "2024-05-27 08:20:22.928861000 +0000"> 
+        2.7.8 :004 > c1.vote_logs
+        VoteLog Load (0.3ms)  SELECT "vote_logs".* FROM "vote_logs" WHERE "vote_logs"."candidate_id" = ? /* loading for inspect */ LIMIT ?  [["candidate_id", 1], ["LIMIT", 11]]
+        => #<ActiveRecord::Associations::CollectionProxy []> 
+        2.7.8 :005 > c1.vote_logs.count
+        (0.5ms)  SELECT COUNT(*) FROM "vote_logs" WHERE "vote_logs"."candidate_id" = ?  [["candidate_id", 1]] -->
+        <!-- 每次顯示的票數，都要 全選n次vote_logs的所有欄位，全選1次candidates的所有欄位，效能不好 -->
+
         <td><%= link_to candidate.name, candidate_path(candidate.id) %></td>
         <!-- <td><a href='/candidates/<%= candidate.id %>'><%= candidate.name %></a></td> -->
         <!-- 單一候選人資料的name（migration欄位名稱 所對應的 使用者輸入的值） -->

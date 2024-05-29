@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_26_132919) do
+ActiveRecord::Schema.define(version: 2024_05_29_061534) do
 
   create_table "candidates", force: :cascade do |t|
     t.string "name"
@@ -20,9 +20,15 @@ ActiveRecord::Schema.define(version: 2024_05_26_132919) do
     t.integer "votes", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.timestamps
-    # timestamps為migration預設欄位，會轉換成created_at與updated_id這兩個時間欄位
-    # 在 資料新增 或 更新 的時候，自動寫入當下時間
   end
 
+  create_table "vote_logs", force: :cascade do |t|
+    t.integer "candidate_id", null: false
+    t.string "ip_address"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["candidate_id"], name: "index_vote_logs_on_candidate_id"
+  end
+
+  add_foreign_key "vote_logs", "candidates"
 end
