@@ -36,7 +36,7 @@
         <!--  vote_candidate   POST   /candidates/:id/vote(.:format)       candidates#vote -->
         <!-- 預設會用GET方法連 -->
         <!-- <td><a rel="nofollow" data-method="post" href="/candidates/1/vote">投票</a></td> -->
-        <td><%= candidate.vote_logs.count %></td> 
+        <!-- <td><%= candidate.vote_logs.count %></td>  -->
         <!-- candidate.vote_logs 會回傳單一候選人的得票記錄（陣列），.count會回傳陣列元素數量，投票記錄數量 即等於 投票數 -->
         <!-- <td><%= candidate.votes %></td> -->
         <!-- 印出candidate的votes欄位值 -->
@@ -49,7 +49,20 @@
         => #<ActiveRecord::Associations::CollectionProxy []> 
         2.7.8 :005 > c1.vote_logs.count
         (0.5ms)  SELECT COUNT(*) FROM "vote_logs" WHERE "vote_logs"."candidate_id" = ?  [["candidate_id", 1]] -->
-        <!-- 每次顯示的票數，都要 全選n次vote_logs的所有欄位，全選1次candidates的所有欄位，效能不好 -->
+        <!-- 每次顯示票數，都要 全選n次vote_logs的所有欄位，全選1次candidates的所有欄位，效能不好 -->
+        <!-- Rails：Counter Cache ：把票寫到投票記錄的當下，同時把候選人的票數，更新到候選人的欄位，如此一來，讀取票數時，就不用再count vote_logs的資料比數，候選人自己就有紀錄票數的欄位-->
+        <!-- 去新增vote_logs_count欄位：rails g migration add_counter_cache_to_candidate，然後add_column -->
+        <!-- <td><%= candidate.vote_logs_count %></td>  -->
+        <!-- 只會去候選人資料表撈一次欄位 -->
+        <!-- SELECT "candidates".* FROM "candidates" -->
+        <!-- 以本例來說，讀取機會比寫入機會多，所以這樣做可以增進很多效能 -->
+        <td><%= candidate.vote_logs.size %></td> 
+        <!-- .size會讀到counter cache的結果，比較能維持關聯性 -->
+        <!-- 但引入counter cache的票數不會被紀錄（引入後，才開始在投票當下 同時更新候選人得票數欄位） -->
+        <!-- 搜尋：rails api reset counter cache -->
+        <!-- reset_counters(id, *counters, touch: nil) public -->
+        <!-- rake -T ：看rails專案中有哪些rake可以用-->
+        <!-- 去lib > tasks加任務 -->
 
         <td><%= link_to candidate.name, candidate_path(candidate.id) %></td>
         <!-- <td><a href='/candidates/<%= candidate.id %>'><%= candidate.name %></a></td> -->
