@@ -1,3 +1,4 @@
+<!-- 公版 -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -11,6 +12,10 @@
   </head>
 
   <body>
+  <!-- <%= flash[:notice] %> -->
+  <!-- 只要有被印過一次，再重新整理就會不見 -->
+  <%= notice %>
+  <!-- 特化（新rails） -->
     <%= yield %>
   </body>
 </html>

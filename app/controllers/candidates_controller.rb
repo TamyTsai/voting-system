@@ -1,5 +1,12 @@
 class CandidatesController < ApplicationController # 繼承自ApplicationController才會有功能
 
+    # before_action :find_candidate
+    # 所有方法執行action前都先做find_candidate方法
+    before_action :find_candidate, only: [:show, :edit, :update, :destroy, :vote]
+    # 在這5個action執行前，先做find_candidtae方法
+    # before_action :find_candidate, except: [:new, :create, :index]
+    # 反向寫法
+    
     def index # controller的action（方法） # 對應 /candidates路徑（候選人清單頁面）
         # 沒有特別聲明的話，就會去views找同名html檔案（index.html.erb）
         @candidates = Candidate.all
@@ -18,7 +25,9 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
         # 點擊第一個候選人頁面時，log顯示Parameters: {"id"=>"1"}
         # 路徑符合/candidates/:id此模式，id就會被捕捉起來，可以拿來放在實體變數之類的
         # 表示可以透過params這個hash，拿id這個key對應的值來用
-        @candidate = Candidate.find_by(id: params[:id]) # 抓出要讀取顯示（R）的資料
+         
+        # 抓出要讀取顯示（R）的資料（before_action已做）
+
         # Candidate類別（model）有find_by方法
 
         # controller負責抓資料給 view要用的實體變數
@@ -61,17 +70,24 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
          # 以Candidate建立物件model時，將清洗過後的資料傳進該物件
 
         if @candidate.save # 若成功將候選人輸入框中的資料 寫入資料庫
-            flash[:notice] = "Candidate created!"
+            # flash[:notice] = "Candidate created!"
             # 事情若完成 不管成功失敗 都給一個訊息，帶到下一頁（轉址頁面）的時候被印出來
             # 跳出來一次就會消失 
             # flash有點像hash 
             #:notice為key（慣例）（舊式hash寫法，key用符號）
             # "Candidate created!"為要提示的訊息（需要透過view呈現在畫面（轉址頁面））
 
-            redirect_to '/candidates' # 跳回候選人列表頁
+            # redirect_to '/candidates' # 跳回候選人列表頁
             # 資料還沒清洗過 的話，會被預設檔下來，出現ActiveModel::ForbiddenAttributesError 錯誤訊息
             # 表示需要 資料清洗
             # 雖然有token的保護，有心人士無法透過其他程式或網站傳送資料進來這裡的後端，但他們還是可以在我們的頁面上用開發者模式，編輯html，新增欄位，成功送更多資料到這裡的後端
+
+            redirect_to '/candidates', notice: "Candidate created!"
+            # 在離開頁面時，給一個flash，flash的key為notice
+            # 失敗的話可以用alert這個key
+            # notice與alert為特化版的key
+            # 舊版rails沒有這種寫法
+
         else # 若 寫入失敗（格式不對、驗證沒過...）（在model做後端驗證（進資料庫前的驗證））          
             # redirect_to '/candidates/new' 
             # 就不跳回候選人列表頁，而是停留在本頁面（新建候選人頁面），但此寫法會轉回全新頁面，導致所有資料都要重填
@@ -96,13 +112,15 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
     # 於rails routes查得：動詞為POST的話  就會去/candidates路徑 找candidates控制器的 create方法（action）
 
     def edit # 對應/candidates/:id/edit路徑（編輯單一候選人資料）
-        # 要先抓到要編輯的候選人資料
-        @candidate = Candidate.find_by(id: params[:id])
+        # 要先抓到要編輯的候選人資料（before_action已做）
+        
     end
 
     def update # 對應以PATCH動詞（事實上是POST PATCH是模擬的）進入的/candidates/:id路徑（將更新的候選人資料儲存）
         # candidate   PATCH  /candidates/:id(.:format)  candidates#update 
-        @candidate = Candidate.find_by(id: params[:id]) # 抓出要更新（U）的資料
+         
+        # 抓出要更新（U）的資料（before_action已做）
+
         # 需要重抓候選人資料，因為http沒有狀態，上一個頁面做的事，下一個頁面不知道
         # 到新頁面後只有id，所以要重做物件
 
@@ -112,8 +130,9 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
         # update_attributes()
         # update_all()
         # 給一包清洗過的資料
-            flash[:notice] = "Candidate updated!"
-            redirect_to '/candidates' # 回到候選人列表頁
+            # flash[:notice] = "Candidate updated!"
+            # redirect_to '/candidates' # 回到候選人列表頁
+            redirect_to '/candidates', notice: "Candidate updated!"
         else
             render :edit
             # 去edit這個頁面，重新渲染一次（不是重新執行edit方法（action）），是請view中的edit頁面重畫一次
@@ -123,15 +142,17 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
 
     def destroy # 對應以 DELETE動詞進入的/candidates/:id路徑（刪除候選人資料）
         # candidate DELETE /candidates/:id(.:format)  candidates#destroy 
-        @candidate = Candidate.find_by(id: params[:id])  # 抓出要刪除（D）的資料
+        
+        # 抓出要刪除（D）的資料（before_action已做）
 
         @candidate.destroy
         # ORM基本操作之D
         # delete （直接刪掉）
         # destroy （會經歷一連串callback）（真的把資料刪除，就不回來，由資料庫中抹除） 
         # destroy_all(condition = nil)
-        flash[:notice] = "Candidate deleted!"
-        redirect_to '/candidates' # 回到候選人列表頁
+        # flash[:notice] = "Candidate deleted!"
+        # redirect_to '/candidates' # 回到候選人列表頁
+        redirect_to '/candidates', notice: "Candidate deleted!"
 
         # 抓資料
         # 刪資料
@@ -143,7 +164,7 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
     def vote # 對應以 POST動詞 進入的 /candidates/:id/vote路徑
         # vote_candidate   POST   /candidates/:id/vote(.:format)       candidates#vote
 
-        @candidate = Candidate.find_by(id: params[:id])  # 抓出要被投票的候選人（網址的:id會被抓下來）
+        # 抓出要被投票的候選人（網址的:id會被抓下來）（before_action已做）
 
         # 從vote角度看記錄（由 選票 本身 建立相關欄位與值）（票投給誰、投票者ip）
         # v = VoteLog.create(candidate: @candidate, ip_address: request.remote_ip)
@@ -169,8 +190,9 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
         # increment方法是rails modle提供的
         # @candidate.save
 
-        flash[:notice] = "Voted!"
-        redirect_to '/candidates' # 回到候選人列表頁
+        # flash[:notice] = "Voted!"
+        # redirect_to '/candidates' # 回到候選人列表頁
+        redirect_to '/candidates', notice: "Voted!"
 
         # 抓資料
         # 更新資料
@@ -191,6 +213,10 @@ class CandidatesController < ApplicationController # 繼承自ApplicationControl
     # clean_params = params.require(:candidate).permit(:name, :party, :age, :politic)
     # 只允許 :candidate（Parameters hash中的key）這個hash 中， 的部分欄位（有人增加新欄位想送資料 該欄位就會被無視）
     # "candidate"=>{"name"=>"123", "party"=>"456", "age"=>"26", "politic"=>"123"}
+
+    def find_candidate
+        @candidate = Candidate.find_by(id: params[:id])
+    end
 
 end
 

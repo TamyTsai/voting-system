@@ -2,21 +2,25 @@
 <h1>編輯候選人資料</h1>
 <!-- 與 新建表單 差不多 -->
 
+<%= render 'form', candidate: @candidate %>
+<!-- partial render 局部渲染 -->
+<!-- form為被渲染對象，檔名前面要底線，用的時候不用 -->
+
 <!-- 如果 候選人物件 有任何錯誤，就印出錯誤訊息 -->
-<% if @candidate.errors.any? %> 
+<!-- <% if @candidate.errors.any? %>  -->
 <!-- 判斷 候選人物件 有沒有任何錯誤 -->
-    <ul>
-        <% @candidate.errors.full_messages.each do |message| %>
+    <!-- <ul>
+        <% @candidate.errors.full_messages.each do |message| %> -->
         <!-- @candidate.errors.full_messages是一個陣列（裝有各個錯誤訊息） 所以可以用each方法 -->
-            <li><%= message %></li>
+            <!-- <li><%= message %></li> -->
             <!-- message是陣列中的每個元素（單一錯誤原訊息） -->
-        <% end %>
+        <!-- <% end %>
     </ul>
-<% end %>
+<% end %> -->
 
 <!-- name沒輸入卻按送出的時候 name的label和輸入框，變成2個div，所以變成兩行，要透過css（app > assets > stylesheets）改善 -->
 
-<%= form_for(@candidate) do |form|%>
+<!-- <%= form_for(@candidate) do |form|%> -->
 <!-- form_for發現@candidate是有料的 所以就先塞好資料 -->
 <!-- 產生html：<form class="edit_candidate" id="edit_candidate_6" action="/candidates/6" accept-charset="UTF-8" method="post"><input type="hidden" name="_method" value="patch" autocomplete="off" /><input type="hidden" name="authenticity_token" value="-bP1LbAg4fHl4T3IYDLJK9vnlg5o-Gre8arNQBrPK-EbfZ88DgWZPOlewvfc2s3Bks0RFuPhmRGbv8Aj-OaXgw" autocomplete="off" /> -->
 <!-- 瀏覽器目前只支援GET、POST動詞，PATCH、PUT、DELETE都是模擬的 -->
@@ -27,7 +31,7 @@
 <!-- 在 /candidates/:id(.:format) 路徑用patch方法 就會去 candidates controller 找update action-->
 <!-- form_for如果接的是 一顆 由 資料庫撈出來的物件，就會認為是要 更新（update） 而非 新增（create），就會使用patch動詞 -->
 
-<div>
+<!-- <div>
     <%= form.label :name %> 
     <%= form.text_field :name %> 
 </div>
@@ -47,8 +51,9 @@
     <%= form.text_area :politic %>
 </div>
 
-<%= form.submit %>
+<%= form.submit %> -->
 <!-- 會按類型顯示送出鈕上面的字 -->
 <!-- form_for如果接的是 一顆 由 資料庫撈出來的物件，就會認為是要 更新（update） 而非 新增（create） -->
 <!-- form_for如果接的是 一顆 全新的物件，就會認為是要 新增（create） -->
-<% end %>
+<!-- <% end %> -->
+

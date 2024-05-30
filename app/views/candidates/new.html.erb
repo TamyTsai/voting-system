@@ -1,92 +1,18 @@
 <!-- /candidates/new新建候選人資料頁面 -->
 <h1>新建候選人頁面</h1>
 
-<!-- 如果 候選人物件 有任何錯誤，就印出錯誤訊息 -->
-<% if @candidate.errors.any? %> 
-<!-- 判斷 候選人物件 有沒有任何錯誤 -->
-    <ul>
-        <% @candidate.errors.full_messages.each do |message| %>
-        <!-- @candidate.errors.full_messages是一個陣列（裝有各個錯誤訊息） 所以可以用each方法 -->
-            <li><%= message %></li>
-            <!-- message是陣列中的每個元素（單一錯誤原訊息） -->
-        <% end %>
-    </ul>
-<% end %>
+<%= render 'form', candidate: @candidate %>
+<!-- partial render 局部渲染 -->
+<!-- form為被渲染對象，檔名前面要底線，用的時候不用 -->
 
-<!-- name沒輸入卻按送出的時候 name的label和輸入框，變成2個div，所以變成兩行，要透過css（app > assets > stylesheets）改善 -->
-
-<!-- 新建候選人頁面/candidates/new -->
-<!-- <form action="/candidates" method="POST">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"> -->
-    <!-- rails的隱藏保護用欄位，當有表單往後端送時，需要此欄位 -->
-    <!-- 避免有心人士 透過檢視網頁原始碼 知道欄位 路徑 傳送方法，然後自己仿造表單往後端送-->
-    <!-- 沒有加此輸入框的話 會出ActionController::InvalidAuthenticityToken訊息 -->
-    <!-- form_authenticity_token會長出一段很長的亂碼，每次重新整理網頁後都不一樣 -->
-    <!-- <input type="hidden" name="authenticity_token" value="l2A8pLmkGEvJLNLrS0qs9jCF07kmuf6wkoaQQk-xHXIwRK0fjCV71WvmhJESd2-5cGuGpiMoMw50_4uBrhm63Q"> -->
-    <!-- 按下送出時，此token會跟著表單送到action（create） -->
-    <!-- rails看到這包東西送來的時候，會檢查是否有他給的token，以確認這個表單資料不是從隨便一個其他小程式送進來的 -->
-    <!-- <input type="text" name="abc"> -->
-    <!-- 輸入123按下送出，伺服器訊息：Parameters: {"authenticity_token"=>"[FILTERED]", "abc"=>"123"} -->
-    <!-- <input type="submit" value="go!"> -->
-<!-- </form> -->
-<!-- 於rails routes查得：動詞為POST的話  就會去/candidates路徑 找candidates控制器的 create方法（action） -->
-
-<!-- form helper -->
-<!-- form_for（Class名稱.new（以該類別建立model物件（實體）））：當form_for發現括弧內為 全新model（剛剛長出來）時，就會自動生成 路徑、傳送方法、隱藏token欄位的html-->
-<!-- 當form_for發現括弧內為 有料的model（有用參數hash抓資料）時，就會自動生成 欄位已經帶有資料的的html -->
-<!-- 欄位要對應migration的欄位名稱，form_for會把相對應的輸入，都塞到相對應欄位 -->
-<!-- 不過建立物件的行為 應該交給controller做會比較好，所以把 Candidate.new寫到controller new方法裡，並指定給實體變數 @candidate，這裡放實體變數-->
-<!-- view不做邏輯運算和物件建立 -->
-<%= form_for(@candidate) do |form|%>
-
-<div>
-    <%= form.label :name %> 
-    <!-- label會在畫面用name做標籤 -->
-    <!-- <label for="candidate_name">Name</label>  -->
-    <%= form.text_field :name %> 
-    <!-- 請用text_field幫我長一個name -->
-</div>
-
-<div>
-    <%= form.label :party %> 
-    <%= form.text_field :party %>
-</div>
-
-<div>
-    <%= form.label :age %> 
-    <%= form.text_field :age %>
-</div>
-
-<div>
-    <%= form.label :politic %> 
-    <%= form.text_area :politic %>
-</div>
-
-<%= form.submit %>
-<!-- form.（form helper）拋出來的東西本身有一些方法，可以讓你把輸入欄位做完 -->
-<!-- 要對應migration的欄位名稱 -->
-<!-- 票數不要寫在這 -->
-<!-- 以上ruby語法（輸入框部分）將生成html：
-<input type="text" name="candidate[name]" id="candidate_name" />
-<input type="text" name="candidate[party]" id="candidate_party" />
-<input type="text" name="candidate[age]" id="candidate_age" />
-<input type="text" name="candidate[politic]" id="candidate_politic" />
-<input type="submit" name="commit" value="Create Candidate" data-disable-with="Create Candidate" /> -->
-<!-- 
-其中name="candidate[name]"
-表示整包東西被丟到rails sever，param抓到時，就會把他抓成一包hash
-{candidate: {name: '頁面輸入的文字'}}
-會把同樣是candidate的，全部抓進同一個candidate hash，在hash裡的同一個key -->
-
-<% end %>
-<!-- 上面程式碼會產生：<form class="new_candidate" id="new_candidate" action="/candidates" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="Mzbk18gIQSC3yWndHvouOMM2I2OeNY9KmN9scY-xhW1thIPMG1lE4fydomob2eSephc7jyUcM8fGFyYsE_pV5Q" autocomplete="off" />
-</form> -->
-<!-- 路徑、傳送方法、隱藏token欄位的html都自動生成 -->
-<!-- do end是一個block，會去承接前面方法yield出來的東西 -->
-<!-- 例如：5.times do |i|
-            puts i
-        end -->
-
-<!-- 輸入框輸入的東西會被抓到一包參數中：Parameters: {"authenticity_token"=>"[FILTERED]", "candidate"=>{"name"=>"123", "party"=>"456", "age"=>"26", "politic"=>"123"}, "commit"=>"Create Candidate"} -->
-<!-- 此Parameters為一個hash，有兩個key，輸入框輸入的資訊，都被抓到candidate key中，並形成另一個hash："candidate"=>{"name"=>"123", "party"=>"456", "age"=>"26", "politic"=>"123"}-->
-<!-- 舊式hash寫法 {key => value} ； 新式 {key: value} -->
+<!-- _form.html.erb有實體變數，所以該檔案無法單獨生存 -->
+<!-- 需要controller給實體變數讓此檔案去抓 沒抓到就會壞掉（controller忘記做 或 action忘記給） -->
+<!-- 所以要讓此檔案變成被動角色，餵變數給其，不要讓他主動抓 -->
+<!-- 去edit和new頁面新增hash -->
+<!-- candidate: @candidate為hash（ruby中，最後一個參數為hash的話，大括弧可以省略） -->
+<!-- candidate為key，@candidate為value -->
+<!-- 表示要傳candidate這個 區域變數 給 _form.html.erb -->
+<!-- 把實體變數轉一手給 _form.html.erb -->
+<!-- 這樣只要不要動到這裡的 區域變數candidate名稱，_form.html.erb就不會因為抓不到變數而壞掉-->
+<!-- 把_form.html.erb變成獨立被餵食的角色 -->
+<!-- 每個使用 _form.html.erb做局部渲染的檔案，都可以主動餵食不同的東西 到 _form.html.erb所使用的區域變數中，讓_form.html.erb隨不同頁面呈現不同東西-->
