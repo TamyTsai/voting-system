@@ -51,11 +51,11 @@ $ brew install ruby
 ```
 ### 取得專案
 ```bash
-$ git clone 
+$ git clone https://github.com/TamyTsai/voting-system.git
 ```
 ### 移動到專案內
 ```bash
-$ cd 
+$ cd voting-system
 ```
 ### 安裝相關套件
 ```bash
