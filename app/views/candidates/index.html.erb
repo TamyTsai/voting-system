@@ -9,7 +9,7 @@
 
 <!-- link_to helper 可長出連結 -->
 <!-- link_to 'Add Candidate', '/candidates/new'  --> <!-- 網址寫死 -->
-<%= link_to 'Add Candidate', new_candidate_path %>
+<%= link_to '新建候選人', new_candidate_path %>
 <!-- link_to '連結顯示之字樣', '點下連結後要前往的網址'（字串型態）（可以Prexfix_path表示） -->
 <!--  new_candidate（Prefix）  GET    /candidates/new(.:format)     candidates#new -->
 <!--  路徑對照表中Prefix為空表示同上-->
@@ -21,76 +21,78 @@
 
 
 <table>
-    <tr>
-        <td></td>
-        <td>Votes</td>
-        <td>Name</td>
-        <td>Party</td>
-        <td>Age</td>
-        <td>Action</td>
-    </tr>
-
-    <% @candidates.each do |candidate| %> <!-- 沒有=，有需要「輸出」（印出來）東西時才要加= ，迴圈本身不用印，迴圈裡的東西才要印（呈現於畫面上）-->
-    <tr>
-        <!-- candidate是@candidates資料們中的單一資料 -->
-        <td><%= link_to '投票', vote_candidate_path(candidate.id),  method: 'post' %></td>
-        <!--  vote_candidate   POST   /candidates/:id/vote(.:format)       candidates#vote -->
-        <!-- 預設會用GET方法連 -->
-        <!-- <td><a rel="nofollow" data-method="post" href="/candidates/1/vote">投票</a></td> -->
-        <!-- <td><%= candidate.vote_logs.count %></td>  -->
-        <!-- candidate.vote_logs 會回傳單一候選人的得票記錄（陣列），.count會回傳陣列元素數量，投票記錄數量 即等於 投票數 -->
-        <!-- <td><%= candidate.votes %></td> -->
-        <!-- 印出candidate的votes欄位值 -->
-        <!-- n+1問題 -->
-        <!-- 2.7.8 :003 > c1 = Candidate.first
-        Candidate Load (0.4ms)  SELECT "candidates".* FROM "candidates" ORDER BY "candidates"."id" ASC LIMIT ?  [["LIMIT", 1]]
-        => #<Candidate id: 1, name: "王小明", party: "狗狗黨", age: 30, politic: "支持狗狗", votes: 0, created_at: "2024-05-27 00:41:53.960402000 +0000", updated_at: "2024-05-27 08:20:22.928861000 +0000"> 
-        2.7.8 :004 > c1.vote_logs
-        VoteLog Load (0.3ms)  SELECT "vote_logs".* FROM "vote_logs" WHERE "vote_logs"."candidate_id" = ? /* loading for inspect */ LIMIT ?  [["candidate_id", 1], ["LIMIT", 11]]
-        => #<ActiveRecord::Associations::CollectionProxy []> 
-        2.7.8 :005 > c1.vote_logs.count
-        (0.5ms)  SELECT COUNT(*) FROM "vote_logs" WHERE "vote_logs"."candidate_id" = ?  [["candidate_id", 1]] -->
-        <!-- 每次顯示票數，都要 全選n次vote_logs的所有欄位，全選1次candidates的所有欄位，效能不好 -->
-        <!-- Rails：Counter Cache ：把票寫到投票記錄的當下，同時把候選人的票數，更新到候選人的欄位，如此一來，讀取票數時，就不用再count vote_logs的資料比數，候選人自己就有紀錄票數的欄位-->
-        <!-- 去新增vote_logs_count欄位：rails g migration add_counter_cache_to_candidate，然後add_column -->
-        <!-- <td><%= candidate.vote_logs_count %></td>  -->
-        <!-- 只會去候選人資料表撈一次欄位 -->
-        <!-- SELECT "candidates".* FROM "candidates" -->
-        <!-- 以本例來說，讀取機會比寫入機會多，所以這樣做可以增進很多效能 -->
-        <td><%= candidate.vote_logs.size %></td> 
-        <!-- .size會讀到counter cache的結果，比較能維持關聯性 -->
-        <!-- 但引入counter cache的票數不會被紀錄（引入後，才開始在投票當下 同時更新候選人得票數欄位） -->
-        <!-- 搜尋：rails api reset counter cache -->
-        <!-- reset_counters(id, *counters, touch: nil) public -->
-        <!-- rake -T ：看rails專案中有哪些rake可以用-->
-        <!-- 去lib > tasks加任務 -->
-
-        <td><%= link_to candidate.name, candidate_path(candidate.id) %></td>
-        <!-- <td><a href='/candidates/<%= candidate.id %>'><%= candidate.name %></a></td> -->
-        <!-- 單一候選人資料的name（migration欄位名稱 所對應的 使用者輸入的值） -->
-        <!-- candidate GET   /candidates/:id(.:format)    candidates#show -->
-        <td><%= candidate.party %></td>
-        <td><%= candidate.age %></td>
-        <td> <!-- 刪除、編輯等按鈕 -->
-            <%= link_to '編輯', edit_candidate_path(candidate.id) %>
-            <!--  edit_candidate   GET   /candidates/:id/edit  candidates#edit -->
-            <!-- 編輯候選人資料頁面路徑 /candidates/:id/edit -->
-            <%= link_to '刪除', candidate_path(candidate.id), method: 'delete', data: {confirm: "確定刪除?"} %>
-            <!-- <%= link_to 'Delete', candidate_path(candidate.id),data: {turbo_method: :delete, turbo_confirm: '確定刪除?'} %> --> <!-- rails 7寫法 -->
-            <!-- <%= link_to '刪除', candidate_path(candidate.id), method: 'delete', data: {confirm: "確定刪除?"} %> -->
-            <!-- candidate DELETE /candidates/:id(.:format)  candidates#destroy -->
-            <!-- 用delete方法 進入/candidates/:id路徑 -->
-            <!--  <a rel="nofollow" data-method="delete" href="/candidates/4">刪除</a> -->
-            <!-- <a data-confirm="確定刪除?" rel="nofollow" data-method="delete" href="/candidates/2">刪除</a> -->
-            <!--  data: {confirm: "確定刪除?"}  會在html標籤裡長出 data_confirm屬性 與  "確定刪除?"的值-->
-            <!--  data: {confirm: "確定刪除?", abc: "123"}  會在html標籤裡長出 data-confirm屬性 與 值"確定刪除?" 及 data-abc屬性 與 值"123"-->
-            <!-- 加上, method: 'delete'，產生的html就多了 data-method="delete" -->
-            <!-- 超連結中有 data-method="delete"屬性 的話，就會用delete當動詞（js動的手腳）-->
-
-        </td> 
-        
-    </tr>
-    <% end %>
-    <!-- 透過迴圈的方式 將已經寫進資料庫的候選人資料（@candidates = Candidate.all） 一筆一筆 印出來 -->
-    <!-- form_for(複數) do |單數| -->
+    <tbody class="table table-striped">
+        <tr>
+            <td></td>
+            <td>得票數</td>
+            <td>姓名</td>
+            <td>黨派</td>
+            <td>年齡</td>
+            <td>操作</td>
+        </tr>
+    
+        <% @candidates.each do |candidate| %> <!-- 沒有=，有需要「輸出」（印出來）東西時才要加= ，迴圈本身不用印，迴圈裡的東西才要印（呈現於畫面上）-->
+        <tr>
+            <!-- candidate是@candidates資料們中的單一資料 -->
+            <td><%= link_to '投票', vote_candidate_path(candidate.id),  method: 'post' %></td>
+            <!--  vote_candidate   POST   /candidates/:id/vote(.:format)       candidates#vote -->
+            <!-- 預設會用GET方法連 -->
+            <!-- <td><a rel="nofollow" data-method="post" href="/candidates/1/vote">投票</a></td> -->
+            <!-- <td><%= candidate.vote_logs.count %></td>  -->
+            <!-- candidate.vote_logs 會回傳單一候選人的得票記錄（陣列），.count會回傳陣列元素數量，投票記錄數量 即等於 投票數 -->
+            <!-- <td><%= candidate.votes %></td> -->
+            <!-- 印出candidate的votes欄位值 -->
+            <!-- n+1問題 -->
+            <!-- 2.7.8 :003 > c1 = Candidate.first
+            Candidate Load (0.4ms)  SELECT "candidates".* FROM "candidates" ORDER BY "candidates"."id" ASC LIMIT ?  [["LIMIT", 1]]
+            => #<Candidate id: 1, name: "王小明", party: "狗狗黨", age: 30, politic: "支持狗狗", votes: 0, created_at: "2024-05-27 00:41:53.960402000 +0000", updated_at: "2024-05-27 08:20:22.928861000 +0000"> 
+            2.7.8 :004 > c1.vote_logs
+            VoteLog Load (0.3ms)  SELECT "vote_logs".* FROM "vote_logs" WHERE "vote_logs"."candidate_id" = ? /* loading for inspect */ LIMIT ?  [["candidate_id", 1], ["LIMIT", 11]]
+            => #<ActiveRecord::Associations::CollectionProxy []> 
+            2.7.8 :005 > c1.vote_logs.count
+            (0.5ms)  SELECT COUNT(*) FROM "vote_logs" WHERE "vote_logs"."candidate_id" = ?  [["candidate_id", 1]] -->
+            <!-- 每次顯示票數，都要 全選n次vote_logs的所有欄位，全選1次candidates的所有欄位，效能不好 -->
+            <!-- Rails：Counter Cache ：把票寫到投票記錄的當下，同時把候選人的票數，更新到候選人的欄位，如此一來，讀取票數時，就不用再count vote_logs的資料比數，候選人自己就有紀錄票數的欄位-->
+            <!-- 去新增vote_logs_count欄位：rails g migration add_counter_cache_to_candidate，然後add_column -->
+            <!-- <td><%= candidate.vote_logs_count %></td>  -->
+            <!-- 只會去候選人資料表撈一次欄位 -->
+            <!-- SELECT "candidates".* FROM "candidates" -->
+            <!-- 以本例來說，讀取機會比寫入機會多，所以這樣做可以增進很多效能 -->
+            <td><%= candidate.vote_logs.size %></td> 
+            <!-- .size會讀到counter cache的結果，比較能維持關聯性 -->
+            <!-- 但引入counter cache的票數不會被紀錄（引入後，才開始在投票當下 同時更新候選人得票數欄位） -->
+            <!-- 搜尋：rails api reset counter cache -->
+            <!-- reset_counters(id, *counters, touch: nil) public -->
+            <!-- rake -T ：看rails專案中有哪些rake可以用-->
+            <!-- 去lib > tasks加任務 -->
+    
+            <td><%= link_to candidate.name, candidate_path(candidate.id) %></td>
+            <!-- <td><a href='/candidates/<%= candidate.id %>'><%= candidate.name %></a></td> -->
+            <!-- 單一候選人資料的name（migration欄位名稱 所對應的 使用者輸入的值） -->
+            <!-- candidate GET   /candidates/:id(.:format)    candidates#show -->
+            <td><%= candidate.party %></td>
+            <td><%= candidate.age %></td>
+            <td> <!-- 刪除、編輯等按鈕 -->
+                <%= link_to '編輯', edit_candidate_path(candidate.id) %>
+                <!--  edit_candidate   GET   /candidates/:id/edit  candidates#edit -->
+                <!-- 編輯候選人資料頁面路徑 /candidates/:id/edit -->
+                <%= link_to '刪除', candidate_path(candidate.id), method: 'delete', data: {confirm: "確定刪除?"} %>
+                <!-- <%= link_to 'Delete', candidate_path(candidate.id),data: {turbo_method: :delete, turbo_confirm: '確定刪除?'} %> --> <!-- rails 7寫法 -->
+                <!-- <%= link_to '刪除', candidate_path(candidate.id), method: 'delete', data: {confirm: "確定刪除?"} %> -->
+                <!-- candidate DELETE /candidates/:id(.:format)  candidates#destroy -->
+                <!-- 用delete方法 進入/candidates/:id路徑 -->
+                <!--  <a rel="nofollow" data-method="delete" href="/candidates/4">刪除</a> -->
+                <!-- <a data-confirm="確定刪除?" rel="nofollow" data-method="delete" href="/candidates/2">刪除</a> -->
+                <!--  data: {confirm: "確定刪除?"}  會在html標籤裡長出 data_confirm屬性 與  "確定刪除?"的值-->
+                <!--  data: {confirm: "確定刪除?", abc: "123"}  會在html標籤裡長出 data-confirm屬性 與 值"確定刪除?" 及 data-abc屬性 與 值"123"-->
+                <!-- 加上, method: 'delete'，產生的html就多了 data-method="delete" -->
+                <!-- 超連結中有 data-method="delete"屬性 的話，就會用delete當動詞（js動的手腳）-->
+    
+            </td> 
+            
+        </tr>
+        <% end %>
+        <!-- 透過迴圈的方式 將已經寫進資料庫的候選人資料（@candidates = Candidate.all） 一筆一筆 印出來 -->
+        <!-- form_for(複數) do |單數| -->
+    </tbody>
 </table>

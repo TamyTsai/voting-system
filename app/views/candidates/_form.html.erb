@@ -42,7 +42,7 @@
 <!-- view不做邏輯運算和物件建立 -->
 <%= form_for(candidate) do |form|%>
 
-<div>
+<div class="form">
     <%= form.label :name %> 
     <!-- label會在畫面用name做標籤 -->
     <!-- <label for="candidate_name">Name</label>  -->
@@ -50,17 +50,17 @@
     <!-- 請用text_field幫我長一個name -->
 </div>
 
-<div>
+<div class="form">
     <%= form.label :party %> 
     <%= form.text_field :party %>
 </div>
 
-<div>
+<div class="form">
     <%= form.label :age %> 
     <%= form.text_field :age %>
 </div>
 
-<div>
+<div class="form">
     <%= form.label :politic %> 
     <%= form.text_area :politic %>
 </div>
