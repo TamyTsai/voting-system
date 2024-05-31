@@ -83,10 +83,10 @@ http://localhost:3000/candidates
 - public - 本專案靜態檔案 (404、422、500 錯誤顯示畫面)放置處
 - tmp - 臨時或暫時用文件放置處
 - vender - 第三方文件放置處
-- Gemfile：要安裝 Ruby 的套件放置處
-- Gemfile.lock：當套件放置 /Gemfile 資料夾時，在終端機輸入 bundle install (可簡化為bundle)，會在此生成此套件的基本設定檔
-- gitignore：這是指利用 git 做版本控制時，不想被 git 追蹤的話，將檔案名稱放置的文件。
-- Rakefile：用來載入 rake 命令包含的任務
+- Gemfile - 要安裝 Ruby 的套件放置處
+- Gemfile.lock - 當套件放置 /Gemfile 資料夾時，在終端機輸入 bundle install (可簡化為bundle)，會在此生成此套件的基本設定檔
+- gitignore - 以 git 做版本控制時，不想被 git 追蹤的檔案名稱放置處話
+- Rakefile - 用來載入 rake 命令包含的任務
 
 
 ## 專案技術
