@@ -43,7 +43,7 @@
 <%= form_for(candidate) do |form|%>
 
 <div class="form">
-    <%= form.label :name %> 
+    <%= form.label :name, '姓名' %> 
     <!-- label會在畫面用name做標籤 -->
     <!-- <label for="candidate_name">Name</label>  -->
     <%= form.text_field :name %> 
@@ -51,17 +51,17 @@
 </div>
 
 <div class="form">
-    <%= form.label :party %> 
+    <%= form.label :party, '黨派' %> 
     <%= form.text_field :party %>
 </div>
 
 <div class="form">
-    <%= form.label :age %> 
+    <%= form.label :age, '年齡' %> 
     <%= form.text_field :age %>
 </div>
 
 <div class="form">
-    <%= form.label :politic %> 
+    <%= form.label :politic, '政見' %> 
     <%= form.text_area :politic %>
 </div>
 
