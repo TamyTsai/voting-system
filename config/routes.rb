@@ -45,6 +45,9 @@ Rails.application.routes.draw do
 
   end
 
+  root 'candidates#index'
+  # 將首頁設定至 candidates controller中的 index action
+
 end
  
 # Rails設計風格 REST：把 網址 當作 資源 看待，讓網址的設計有標準
