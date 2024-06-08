@@ -28,7 +28,7 @@ Things you may want to cover:
 - 本專案為一個投票系統
 - 以HTML、CSS及Ruby撰寫，為動態網頁
 - 樣式部分以SCSS撰寫，提升程式碼可讀性
-- 使用Bootstrap美化頁面
+- 使用Bulma美化頁面
 - 使用Rails框架製作網頁
 - 使用SQLite資料庫儲存候選人及投票資料
 
@@ -40,7 +40,14 @@ Things you may want to cover:
 - 除了記錄各候選人得票數，亦記錄投票資訊（投票時間、投票者ip位置等），避免做票
 - 候選人資料新建、更新、刪除及投票成功時，皆會於頁面上方跳出一次性提醒
 
-<!-- ## 畫面 -->
+## 畫面
+### 首頁（候選人列表）
+
+### 新建候選人
+
+### 編輯候選人資料
+
+### 查看單一候選人資料（透過點擊首頁候選人列表之候選人姓名）
 
 
 ## 安裝
@@ -91,7 +98,7 @@ http://localhost:3000/candidates
 - HTML
 - CSS
     - SCSS
-    - Bootstrap v5.3.3
+    - Bulma v1.0.1
 - Ruby v2.7.8
     - Rails v6.1.7.7
 - SQLite
