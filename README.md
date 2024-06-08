@@ -33,11 +33,13 @@ Things you may want to cover:
 - 使用SQLite資料庫儲存候選人及投票資料
 
 ## 功能
-- C（create）：新建候選人資料
-- R（read）：讀取已建立之候選人資料
-- U（update）：編輯更新單一已建立之候選人資料
-- D（delete）：刪除單一已建立之候選人資料
-- 除了記錄各候選人得票數，亦記錄投票資訊（投票時間、投票者ip位置等），避免做票
+- C（create）：於首頁點擊新建候選人按鈕，進入新建候選人資料頁面
+- R（read）：首頁可讀取已建立之候選人資料
+- U（update）：於首頁點擊編輯按鈕，進入編輯更新單一已建立之候選人資料頁面
+- D（delete）：於首頁點擊刪除按鈕，刪除單一已建立之候選人資料
+- 於首頁候選人清單頁面點擊投票按鈕，可進行投票
+- 各候選人得票數顯示於首頁候選人清單上（已使用rails counter cache解決N+1問題）
+- 資料庫除了記錄各候選人得票數，亦記錄投票資訊（投票時間、投票者ip位置等），避免做票
 - 候選人資料新建、更新、刪除及投票成功時，皆會於頁面上方跳出一次性提醒
 
 ## 畫面
@@ -88,10 +90,10 @@ http://localhost:3000/candidates
 - public - 本專案靜態檔案 (404、422、500 錯誤顯示畫面)放置處
 - tmp - 臨時或暫時用文件放置處
 - vender - 第三方文件放置處
-- Gemfile：要安裝 Ruby 的套件放置處
-- Gemfile.lock：當套件放置 /Gemfile 資料夾時，在終端機輸入 bundle install (可簡化為bundle)，會在此生成此套件的基本設定檔
-- gitignore：這是指利用 git 做版本控制時，不想被 git 追蹤的話，將檔案名稱放置的文件。
-- Rakefile：用來載入 rake 命令包含的任務
+- Gemfile - 要安裝 Ruby 的套件放置處
+- Gemfile.lock - 當套件放置 /Gemfile 資料夾時，在終端機輸入 bundle install (可簡化為bundle)，會在此生成此套件的基本設定檔
+- gitignore - 以 git 做版本控制時，不想被 git 追蹤的檔案名稱放置處
+- Rakefile - 用來載入 rake 命令包含的任務
 
 
 ## 專案技術
