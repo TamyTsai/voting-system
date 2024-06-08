@@ -3,14 +3,23 @@
 <!-- 在ruby中，只有false與nil會被判斷為false -->
 <!-- 當controller用find_by方法找不存在id的候選人資料時，會回傳nil -->
 <!-- 所以這裡是表示有該筆候選人資料時 -->
-    <h1><%= @candidate.name %></h1>
+    <h1 class="title is-3"><%= @candidate.name %></h1>
     <!-- 在controller show action 中以id抓到資料後，印出name key對應的值 -->
 
-    <ul>
-        <li>黨派: <%= @candidate.party %></li>
-        <li>年齡: <%= @candidate.age %></li>
-        <li>政見: <%= @candidate.politic %></li>
-    </ul>
+    <table class="table">
+        <tr>
+            <td class="title is-4">黨派</td>
+            <td class="title is-4"> <%= @candidate.party %></td>
+        </tr>
+        <tr>
+            <td class="title is-4">年齡</td>
+            <td class="title is-4"> <%= @candidate.age %></td>
+        </tr>
+        <tr>
+            <td class="title is-4">政見</td>
+            <td class="title is-4"><%= @candidate.politic %></td>
+        </tr>
+    </table>
 <% else %>
 
 <h1>No Record found!</h1>

@@ -46,23 +46,23 @@
     <%= form.label :name, '姓名' %> 
     <!-- label會在畫面用name做標籤 -->
     <!-- <label for="candidate_name">Name</label>  -->
-    <%= form.text_field :name %> 
+    <%= form.text_field :name, class: 'input' %> 
     <!-- 請用text_field幫我長一個name -->
 </div>
 
 <div class="form">
     <%= form.label :party, '黨派' %> 
-    <%= form.text_field :party %>
+    <%= form.text_field :party, class: 'input' %>
 </div>
 
 <div class="form">
     <%= form.label :age, '年齡' %> 
-    <%= form.text_field :age %>
+    <%= form.text_field :age, class: 'input' %>
 </div>
 
 <div class="form">
     <%= form.label :politic, '政見' %> 
-    <%= form.text_area :politic %>
+    <%= form.text_area :politic, class: 'textarea', rows: 5 %>
 </div>
 
 <%= form.submit %>
