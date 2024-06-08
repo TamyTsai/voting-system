@@ -44,13 +44,16 @@ Things you may want to cover:
 
 ## 畫面
 ### 首頁（候選人列表）
+![截圖 2024-06-08 候選人列表](https://github.com/TamyTsai/voting-system/assets/97825677/0cddd6d7-427a-4f69-9e71-8bae67f5c6b7)
 
 ### 新建候選人
+![截圖 2024-06-08 新建候選人](https://github.com/TamyTsai/voting-system/assets/97825677/b25d84e0-fb3c-45e8-a5a6-96f3ac35e99d)
 
 ### 編輯候選人資料
+![截圖 2024-06-08 編輯候選人資料](https://github.com/TamyTsai/voting-system/assets/97825677/d95704a3-34d1-4905-b484-ab537fb587b8)
 
 ### 查看單一候選人資料（透過點擊首頁候選人列表之候選人姓名）
-
+![截圖 2024-06-08 查看單一候選人](https://github.com/TamyTsai/voting-system/assets/97825677/0afe3cd8-c4b4-476b-8a50-7ea6a299911a)
 
 ## 安裝
 以下皆為於macOS環境運行
