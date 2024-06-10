@@ -106,4 +106,4 @@ http://localhost:3000/candidates
     - Bulma v1.0.1
 - Ruby v2.7.8
     - Rails v6.1.7.7
-- SQLite
+- SQLite3 v1.6.9
